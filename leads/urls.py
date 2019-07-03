@@ -1,5 +1,5 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-    path('all-leads/', views.LeadListCreate.as_view() ),
+    path('add-lead/', views.LeadListCreate.as_view() ),
 ]
