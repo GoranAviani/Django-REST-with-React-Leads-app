@@ -6,11 +6,32 @@ from leads.serializers import LeadSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-    
-
+from rest_framework import status    
+'''
+#Abandoned due to custom API view CreateLead
 class LeadListCreate(generics.ListCreateAPIView):
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
+'''
+
+
+class CreateLead(APIView):
+    serializer_class = LeadSerializer
+
+    def post(self, request):
+        name = request.data.get("name")
+        email = request.data.get("email")
+        message = request.data.get("message")
+        data = {'name': name, 'email': email, 'message': message}
+        serializer = LeadSerializer(data=data)
+        if serializer.is_valid():
+            lead = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 #Depreciated due to using custom views class ShowLeadsList(APIView):
 '''
