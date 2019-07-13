@@ -13,13 +13,14 @@ class LeadListCreate(generics.ListCreateAPIView):
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
 '''
-
-
 class CreateLead(APIView):
     serializer_class = LeadSerializer
 
     def post(self, request):
         name = request.data.get("name")
+        if name == "testing":
+            specialMessage = {'Special Message': name + "is not an allowed name"}
+            return Response(specialMessage, status=status.HTTP_406_NOT_ACCEPTABLE)
         email = request.data.get("email")
         message = request.data.get("message")
         data = {'name': name, 'email': email, 'message': message}
@@ -44,3 +45,4 @@ class ShowLeadsList(APIView):
         leads = Lead.objects.all()[:20]
         data = LeadSerializer(leads, many=True).data
         return Response(data)
+
