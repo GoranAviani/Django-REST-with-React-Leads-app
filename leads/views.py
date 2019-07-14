@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from leads.models import Lead
-from leads.serializers import LeadSerializer
+from leads.serializers import LeadSerializer, NoModelSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -46,3 +46,17 @@ class ShowLeadsList(APIView):
         data = LeadSerializer(leads, many=True).data
         return Response(data)
 
+class NoModelView(APIView):
+    serializer_class = NoModelSerializer
+
+    def post(self, request):
+        testChar = request.data.get("testCharAPI")
+        testList = request.data.get("testListAPI")
+        print(testChar)
+        print(testList)
+        data = {'testChar': testChar, 'testList': testList}
+        serializer = NoModelSerializer(data=data)
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
