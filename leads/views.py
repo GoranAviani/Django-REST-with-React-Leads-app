@@ -54,6 +54,9 @@ class NoModelView(APIView):
         testList = request.data.get("testListAPI")
         print(testChar)
         print(testList)
+        stringOfTestList = testList.split(",")
+        for x in stringOfTestList:
+            print(str(x))
         data = {'testChar': testChar, 'testList': testList}
         serializer = NoModelSerializer(data=data)
         if serializer.is_valid():
